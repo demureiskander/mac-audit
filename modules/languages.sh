@@ -49,10 +49,10 @@ scan_languages() {
   fi
 
   log_sub "Виртуальные окружения (venv) на диске"
-  run "find ~ -maxdepth 6 -name 'pyvenv.cfg' -not -path '*/\.*' 2>/dev/null"
+  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 6 -name 'pyvenv.cfg' -not -path '*/\.*' 2>/dev/null"
 
   log_sub "pip list в каждом venv"
-  find ~ -maxdepth 6 -name "pyvenv.cfg" -not -path "*/\.*" 2>/dev/null | while read -r f; do
+  find ~/Documents ~/Desktop ~/Projects -maxdepth 6 -name "pyvenv.cfg" -not -path "*/\.*" 2>/dev/null | while read -r f; do
     local dir
     dir=$(dirname "$f")
     echo "\n  --- venv: $dir ---" | tee -a "$OUTPUT"
