@@ -48,17 +48,6 @@ scan_languages() {
     log_skip "conda / miniconda"
   fi
 
-  log_sub "Виртуальные окружения (venv) на диске"
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 6 -name 'pyvenv.cfg' -not -path '*/\.*' 2>/dev/null"
-
-  log_sub "pip list в каждом venv"
-  find ~/Documents ~/Desktop ~/Projects -maxdepth 6 -name "pyvenv.cfg" -not -path "*/\.*" 2>/dev/null | while read -r f; do
-    local dir
-    dir=$(dirname "$f")
-    echo "\n  --- venv: $dir ---" | tee -a "$OUTPUT"
-    "$dir/bin/pip" list 2>/dev/null | tee -a "$OUTPUT"
-  done
-
   # ── Jupyter ─────────────────────────────────────────────
   log_sub "Jupyter"
   if has_cmd jupyter; then
