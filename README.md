@@ -1,5 +1,7 @@
 # 🔍 mac-audit
 
+![Shell](https://img.shields.io/badge/shell-zsh-informational) ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey) ![License](https://img.shields.io/badge/license-MIT-green)
+
 Универсальный скрипт для полного аудита установленного ПО на macOS.
 
 Показывает **что установлено, где лежит и для чего нужно** — приложения, языки программирования, AI/LLM модели, Docker, DevOps инструменты, инструменты безопасности и использование диска.
@@ -61,19 +63,44 @@ chmod +x mac_audit.sh
 - Zsh (стандартный shell в macOS с Catalina)
 - Интернет не нужен
 
+## ⚠️ Известные ограничения
+
+- Тестировался на macOS Tahoe 26.3, Apple M4 Pro
+- Поиск `.gguf`, `.safetensors`, `.ckpt` файлов выполняется только в `~/Documents`, `~/Downloads`, `~/Desktop`, `~/MLXModels` — поиск по всему `~` зависает на больших дисках
+- Поиск виртуальных окружений (venv) только в `~/Documents`
+- Языки `swift`, `kotlin`, `scala`, `dotnet`, `r` не проверяются через `--version` — зависают на macOS без полного Xcode
+- Docker должен быть запущен перед аудитом, иначе команды docker пропускаются
+
 ## 🤝 Contributing
 
 Нашёл инструмент которого нет в скрипте? Открой Pull Request — добавь проверку в нужный модуль в папке `modules/`.
 
-Структура модуля:
+**Как добавить новый модуль:**
+
+1. Создай файл `modules/mymodule.sh`:
+
 ```zsh
-log_sub "Название инструмента"
-if has_cmd mytools; then
+#!/bin/zsh
+source "$(dirname "$0")/utils.sh"
+
+scan_mymodule() {
+  log_section "МОЙ МОДУЛЬ"
+
+  log_sub "Название инструмента"
+  if has_cmd mytool; then
     log_ok "mytool: $(mytool --version 2>/dev/null)"
     run "mytool list 2>/dev/null"
-else
+  else
     log_skip "mytool"
-fi
+  fi
+}
+```
+
+2. Подключи в `mac_audit.sh`:
+
+```zsh
+source "$SCRIPT_DIR/modules/mymodule.sh"
+# ...и добавь scan_mymodule в блок case
 ```
 
 ## 📄 Лицензия
