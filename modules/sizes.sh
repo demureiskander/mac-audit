@@ -29,10 +29,4 @@ scan_sizes() {
   log_sub "~/Library/Caches (топ)"
   run "find ~/Library/Caches -maxdepth 1 -mindepth 1 -exec du -sh {} \; 2>/dev/null | sort -rh | head -20"
 
-
-  log_sub "Крупные файлы в ~/Documents ~/Desktop ~/Projects (>500MB)"
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 5 -size +500M 2>/dev/null | while read f; do
-    size=\$(du -sh \"\$f\" 2>/dev/null | cut -f1)
-    echo \"  \$size  \$f\"
-  done | sort -rh | head -30"
 }
