@@ -181,7 +181,7 @@ scan_languages() {
   # ── Другие языки ────────────────────────────────────────
   log_sub "Прочие языки"
 
-  for lang in php r julia elixir swift kotlin scala dotnet lua perl zig; do
+  for lang in php julia elixir swift kotlin scala dotnet lua perl zig; do
     if has_cmd "$lang"; then
       version=$(timeout 3 "$lang" --version 2>&1 | head -1)
       log_ok "${lang}: ${version}"
