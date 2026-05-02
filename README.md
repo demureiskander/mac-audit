@@ -1,3 +1,5 @@
+<img width="2508" height="627" alt="image" src="https://github.com/user-attachments/assets/e4717f9c-e0f9-446f-8519-ed06b13f4ad1" />
+
 # 🔍 mac-audit
 
 ![Shell](https://img.shields.io/badge/shell-zsh-informational) ![Platform](https://img.shields.io/badge/platform-macOS-lightgrey) ![License](https://img.shields.io/badge/license-MIT-green)
