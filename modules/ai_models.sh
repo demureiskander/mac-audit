@@ -126,4 +126,15 @@ scan_ai() {
   else
     log_skip "LocalAI (CLI)"
   fi
+
+  # ── Поиск файлов моделей ────────────────────────────────
+  log_sub "Поиск файлов моделей (.gguf, .safetensors, .ckpt)"
+  for search_dir in "$HOME/Documents" "$HOME/Downloads" "$HOME/Desktop" "$HOME/MLXModels"; do
+    if [[ -d "$search_dir" ]]; then
+      find "$search_dir" -maxdepth 5 \( -name "*.gguf" -o -name "*.safetensors" -o -name "*.ckpt" \) 2>/dev/null | while read -r f; do
+        size=$(du -sh "$f" 2>/dev/null | cut -f1)
+        echo "  $size  $f" | tee -a "$OUTPUT"
+      done
+    fi
+  done
 }
