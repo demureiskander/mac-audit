@@ -1,7 +1,7 @@
 #!/bin/zsh
 # apps.sh — установленные приложения
 
-source "$(dirname "$0")/modules/utils.sh"
+source "$(dirname "$0")/utils.sh"
 
 scan_apps() {
   log_section "ПРИЛОЖЕНИЯ"
