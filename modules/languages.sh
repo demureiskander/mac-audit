@@ -1,7 +1,7 @@
 #!/bin/zsh
 # languages.sh — языки программирования, рантаймы, менеджеры пакетов
 
-source "$(dirname "$0")/modules/utils.sh"
+source "$(dirname "$0")/utils.sh"
 
 scan_languages() {
   log_section "ЯЗЫКИ ПРОГРАММИРОВАНИЯ И РАНТАЙМЫ"
@@ -49,10 +49,10 @@ scan_languages() {
   fi
 
   log_sub "Виртуальные окружения (venv) на диске"
-  run "find ~ -name 'pyvenv.cfg' -not -path '*/\.*' 2>/dev/null"
+  run "find ~ -maxdepth 6 -name 'pyvenv.cfg' -not -path '*/\.*' 2>/dev/null"
 
   log_sub "pip list в каждом venv"
-  find ~ -name "pyvenv.cfg" -not -path "*/\.*" 2>/dev/null | while read -r f; do
+  find ~ -maxdepth 6 -name "pyvenv.cfg" -not -path "*/\.*" 2>/dev/null | while read -r f; do
     local dir
     dir=$(dirname "$f")
     echo "\n  --- venv: $dir ---" | tee -a "$OUTPUT"

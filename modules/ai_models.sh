@@ -1,7 +1,7 @@
 #!/bin/zsh
 # ai_models.sh — LLM модели, AI инструменты, генеративные модели
 
-source "$(dirname "$0")/modules/utils.sh"
+source "$(dirname "$0")/utils.sh"
 
 scan_ai() {
   log_section "AI / LLM МОДЕЛИ И ИНСТРУМЕНТЫ"

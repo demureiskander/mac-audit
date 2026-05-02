@@ -1,7 +1,7 @@
 #!/bin/zsh
 # docker.sh — Docker образы, контейнеры, тома
 
-source "$(dirname "$0")/modules/utils.sh"
+source "$(dirname "$0")/utils.sh"
 
 scan_docker() {
   log_section "DOCKER"

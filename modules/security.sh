@@ -1,7 +1,7 @@
 #!/bin/zsh
 # security.sh — инструменты кибербезопасности и пентеста
 
-source "$(dirname "$0")/modules/utils.sh"
+source "$(dirname "$0")/utils.sh"
 
 scan_security() {
   log_section "ИНСТРУМЕНТЫ БЕЗОПАСНОСТИ / ПЕНТЕСТ"
