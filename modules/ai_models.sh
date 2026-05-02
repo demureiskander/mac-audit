@@ -140,7 +140,7 @@ scan_ai() {
   # ── Поиск файлов моделей по расширению ──────────────────
   log_sub "Файлы .gguf (GGUF — LLaMA, Gemma, Qwen, Mistral...)"
   local gguf_found=0
-  find ~ -name "*.gguf" 2>/dev/null | while read -r f; do
+  find ~ -maxdepth 5 -name "*.gguf" 2>/dev/null | while read -r f; do
     size=$(du -sh "$f" 2>/dev/null | cut -f1)
     echo "  ${size}  ${f}" | tee -a "$OUTPUT"
     gguf_found=1
@@ -149,7 +149,7 @@ scan_ai() {
 
   log_sub "Файлы .safetensors (Stable Diffusion, transformers...)"
   local st_found=0
-  find ~ -name "*.safetensors" 2>/dev/null | while read -r f; do
+  find ~ -maxdepth 5 -name "*.safetensors" 2>/dev/null | while read -r f; do
     size=$(du -sh "$f" 2>/dev/null | cut -f1)
     echo "  ${size}  ${f}" | tee -a "$OUTPUT"
     st_found=1
@@ -157,19 +157,19 @@ scan_ai() {
   [[ $st_found -eq 0 ]] && log_skip ".safetensors файлы"
 
   log_sub "Файлы .ckpt (Stable Diffusion checkpoint)"
-  find ~ -name "*.ckpt" 2>/dev/null | while read -r f; do
+  find ~ -maxdepth 5 -name "*.ckpt" 2>/dev/null | while read -r f; do
     size=$(du -sh "$f" 2>/dev/null | cut -f1)
     echo "  ${size}  ${f}" | tee -a "$OUTPUT"
   done || log_skip ".ckpt файлы"
 
   log_sub "Файлы pytorch_model*.bin (PyTorch модели)"
-  find ~ -name "pytorch_model*.bin" 2>/dev/null | while read -r f; do
+  find ~ -maxdepth 5 -name "pytorch_model*.bin" 2>/dev/null | while read -r f; do
     size=$(du -sh "$f" 2>/dev/null | cut -f1)
     echo "  ${size}  ${f}" | tee -a "$OUTPUT"
   done || log_skip "pytorch_model.bin файлы"
 
   log_sub "Файлы .mlpackage / .mlmodel (CoreML модели)"
-  find ~ -name "*.mlpackage" -o -name "*.mlmodel" 2>/dev/null | while read -r f; do
+  find ~ -maxdepth 5 \( -name "*.mlpackage" -o -name "*.mlmodel" \) 2>/dev/null | while read -r f; do
     size=$(du -sh "$f" 2>/dev/null | cut -f1)
     echo "  ${size}  ${f}" | tee -a "$OUTPUT"
   done || log_skip ".mlpackage / .mlmodel файлы"
