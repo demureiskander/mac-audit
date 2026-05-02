@@ -10,31 +10,30 @@ scan_sizes() {
   run "df -h / 2>/dev/null"
 
   log_sub "Скрытые папки в ~/ (топ по размеру)"
-  run "du -sh ~/.[^.]* 2>/dev/null | sort -rh | head -30"
+  for dir in ~/.ollama ~/.cache ~/.local ~/.npm ~/.cargo ~/.go ~/.nvm ~/.pyenv ~/.config ~/.docker ~/.vscode; do
+    if [[ -d "$dir" ]]; then
+      size=$(du -sh "$dir" 2>/dev/null | cut -f1)
+      echo "  $size  $dir" | tee -a "$OUTPUT"
+    fi
+  done
 
   log_sub "~/Documents (топ)"
-  run "du -sh ~/Documents/* 2>/dev/null | sort -rh | head -20"
+  run "find ~/Documents -maxdepth 1 -mindepth 1 -exec du -sh {} \; 2>/dev/null | sort -rh | head -20"
 
   log_sub "~/Downloads (топ)"
-  run "du -sh ~/Downloads/* 2>/dev/null | sort -rh | head -20"
+  run "find ~/Downloads -maxdepth 1 -mindepth 1 -exec du -sh {} \; 2>/dev/null | sort -rh | head -20"
 
   log_sub "~/Library/Application Support (топ)"
-  run "du -sh ~/Library/Application\ Support/* 2>/dev/null | sort -rh | head -20"
+  run "find ~/Library/Application\ Support -maxdepth 1 -mindepth 1 -exec du -sh {} \; 2>/dev/null | sort -rh | head -20"
 
   log_sub "~/Library/Caches (топ)"
-  run "du -sh ~/Library/Caches/* 2>/dev/null | sort -rh | head -20"
+  run "find ~/Library/Caches -maxdepth 1 -mindepth 1 -exec du -sh {} \; 2>/dev/null | sort -rh | head -20"
 
   log_sub "~/Library/Containers (топ)"
-  run "du -sh ~/Library/Containers/* 2>/dev/null | sort -rh | head -20"
+  run "find ~/Library/Containers -maxdepth 1 -mindepth 1 -exec du -sh {} \; 2>/dev/null | sort -rh | head -20"
 
-  log_sub "Крупные файлы в ~/ (>500MB)"
-  run "find ~ -size +500M -not -path '*/\.*' 2>/dev/null | while read f; do
-    size=\$(du -sh \"\$f\" 2>/dev/null | cut -f1)
-    echo \"  \$size  \$f\"
-  done | sort -rh | head -30"
-
-  log_sub "Крупные файлы в ~/.* скрытых папках (>500MB)"
-  run "find ~ -size +500M -path '*/\.*' 2>/dev/null | while read f; do
+  log_sub "Крупные файлы в ~/Documents ~/Desktop ~/Projects (>500MB)"
+  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 5 -size +500M 2>/dev/null | while read f; do
     size=\$(du -sh \"\$f\" 2>/dev/null | cut -f1)
     echo \"  \$size  \$f\"
   done | sort -rh | head -30"
