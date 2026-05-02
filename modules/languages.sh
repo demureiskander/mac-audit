@@ -183,15 +183,14 @@ scan_languages() {
 
   for lang in php julia elixir lua perl zig; do
     if has_cmd "$lang"; then
-      version=$(timeout 3 "$lang" --version 2>&1 | head -1)
-      log_ok "${lang}: ${version}"
+      log_ok "$lang найден: $(which $lang)"
     else
       log_skip "$lang"
     fi
   done
 
   if has_cmd flutter; then
-    log_ok "Flutter: $(flutter --version 2>&1 | head -1)"
+    log_ok "Flutter: $(timeout 5 flutter --version 2>&1 | head -1)"
     run "flutter doctor --no-version-check 2>/dev/null | head -20"
   else
     log_skip "Flutter / Dart"
