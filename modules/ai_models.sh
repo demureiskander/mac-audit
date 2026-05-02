@@ -109,15 +109,6 @@ scan_ai() {
     log_skip "llama.cpp"
   fi
 
-  # ── text-generation-webui (oobabooga) ───────────────────
-  log_sub "text-generation-webui (oobabooga)"
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -type d -name 'text-generation-webui' 2>/dev/null"
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -type d -name 'oobabooga' 2>/dev/null"
-
-  # ── Stable Diffusion / ComfyUI / InvokeAI ───────────────
-  log_sub "Stable Diffusion и генеративные инструменты"
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -type d 2>/dev/null | grep -iE 'comfy|stable.diff|invokeai|automatic1111|fooocus|diffusion' | grep -v '.git'"
-
   # ── Open WebUI ──────────────────────────────────────────
   log_sub "Open WebUI"
   local webui_data="$HOME/Library/Application Support/open-webui"
@@ -135,46 +126,4 @@ scan_ai() {
   else
     log_skip "LocalAI (CLI)"
   fi
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -type d -name 'localai' 2>/dev/null"
-
-  # ── Поиск файлов моделей по расширению ──────────────────
-  log_sub "Файлы .gguf (GGUF — LLaMA, Gemma, Qwen, Mistral...)"
-  local gguf_found=0
-  find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -name "*.gguf" 2>/dev/null | while read -r f; do
-    size=$(du -sh "$f" 2>/dev/null | cut -f1)
-    echo "  ${size}  ${f}" | tee -a "$OUTPUT"
-    gguf_found=1
-  done
-  [[ $gguf_found -eq 0 ]] && log_skip ".gguf файлы"
-
-  log_sub "Файлы .safetensors (Stable Diffusion, transformers...)"
-  local st_found=0
-  find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -name "*.safetensors" 2>/dev/null | while read -r f; do
-    size=$(du -sh "$f" 2>/dev/null | cut -f1)
-    echo "  ${size}  ${f}" | tee -a "$OUTPUT"
-    st_found=1
-  done
-  [[ $st_found -eq 0 ]] && log_skip ".safetensors файлы"
-
-  log_sub "Файлы .ckpt (Stable Diffusion checkpoint)"
-  find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -name "*.ckpt" 2>/dev/null | while read -r f; do
-    size=$(du -sh "$f" 2>/dev/null | cut -f1)
-    echo "  ${size}  ${f}" | tee -a "$OUTPUT"
-  done || log_skip ".ckpt файлы"
-
-  log_sub "Файлы pytorch_model*.bin (PyTorch модели)"
-  find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -name "pytorch_model*.bin" 2>/dev/null | while read -r f; do
-    size=$(du -sh "$f" 2>/dev/null | cut -f1)
-    echo "  ${size}  ${f}" | tee -a "$OUTPUT"
-  done || log_skip "pytorch_model.bin файлы"
-
-  log_sub "Файлы .mlpackage / .mlmodel (CoreML модели)"
-  find ~/Documents ~/Desktop ~/Projects -maxdepth 4 \( -name "*.mlpackage" -o -name "*.mlmodel" \) 2>/dev/null | while read -r f; do
-    size=$(du -sh "$f" 2>/dev/null | cut -f1)
-    echo "  ${size}  ${f}" | tee -a "$OUTPUT"
-  done || log_skip ".mlpackage / .mlmodel файлы"
-
-  # ── Общий поиск AI-папок ────────────────────────────────
-  log_sub "Другие AI-папки (поиск по ключевым словам)"
-  run "find ~/Documents ~/Desktop ~/Projects -maxdepth 4 -type d 2>/dev/null | grep -iE '(llm|gpt|llama|gemma|qwen|mistral|phi|falcon|vicuna|alpaca|wizard|neural|diffusion|embedding|checkpoint|model.weights)' | grep -v '.git' | grep -v 'node_modules' | head -30"
 }
