@@ -51,8 +51,7 @@ scan_languages() {
   log_sub "Виртуальные окружения (venv) в ~/Documents"
   find ~/Documents -maxdepth 6 -name "pyvenv.cfg" 2>/dev/null | while read -r f; do
     dir=$(dirname "$f")
-    echo "\n  --- venv: $dir ---" | tee -a "$OUTPUT"
-    "$dir/bin/pip" list 2>/dev/null | tee -a "$OUTPUT"
+    log_ok "venv: $dir"
   done
 
   # ── Jupyter ─────────────────────────────────────────────
