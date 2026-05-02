@@ -183,7 +183,7 @@ scan_languages() {
 
   for lang in php r julia elixir swift kotlin scala dotnet lua perl zig; do
     if has_cmd "$lang"; then
-      version=$("$lang" --version 2>&1 | head -1)
+      version=$(timeout 3 "$lang" --version 2>&1 | head -1)
       log_ok "${lang}: ${version}"
     else
       log_skip "$lang"
